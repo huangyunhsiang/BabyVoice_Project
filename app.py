@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_mic_recorder import mic_recorder
+
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
@@ -153,14 +153,11 @@ sample_rate = None
 
 with col1:
     st.markdown('<h3 class="sub-header">🎙️ 錄製聲音</h3>', unsafe_allow_html=True)
-    # mic_recorder returns a dictionary with 'bytes' if successful
-    recorded_audio = mic_recorder(
-        start_prompt="開始錄音",
-        stop_prompt="停止錄音",
-        key='recorder'
-    )
-    if recorded_audio:
-        audio_bytes = recorded_audio['bytes']
+    # Use native Streamlit audio input which works better on mobile
+    audio_value = st.audio_input("點擊下方麥克風開始錄音")
+    
+    if audio_value:
+        audio_bytes = audio_value.read()
         st.audio(audio_bytes, format='audio/wav')
         st.success("錄音完成！")
 
